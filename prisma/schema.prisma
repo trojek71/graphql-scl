@@ -9,3 +9,52 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model User {
+  id        String     @id @default(uuid())
+  email     String
+  active    Boolean
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  role      Role
+  profile   Profile?
+  itsystems Itsystem[]
+}
+
+model Profile {
+  id        String @id @default(uuid())
+  firstName String
+  lastName  String
+  phone     String
+  room      Int
+  bio       String
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
+}
+
+model Itsystem {
+  id             String   @id @default(uuid())
+  itSystemUser   User     @relation(fields: [itSystemUserId], references: [id])
+  itSystemUserId String
+  sysInfo        SysInfo?
+
+
+}
+
+model SysInfo {
+  id           String   @id @default(uuid())
+  name         String
+  active       Boolean
+  description  String
+  bissnesOwner String
+  adminstrator String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  itsystem     Itsystem @relation(fields: [itSystemId], references: [id])
+  itSystemId   String   @unique
+}
+
+enum Role {
+  ADMIN
+  ORDINARY
+}
