@@ -29,16 +29,16 @@ model Profile {
   phone     String
   room      Int
   bio       String
-  userId    String @unique
-  user      User   @relation(fields: [userId], references: [id])
+  userId    String  @unique
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Itsystem {
-  id             String   @id @default(uuid())
-  itSystemUser   User     @relation(fields: [itSystemUserId], references: [id])
-  itSystemUserId String
-  sysInfo        SysInfo?
-  userPermission String
+  id              String   @id @default(uuid())
+  itSystemUsers   User[]   @relation(fields: [itSystemUserId], references: [id])
+  itSystemUserId  String
+  sysInfo         SysInfo?
+  userPermission  String
 
 
 }
