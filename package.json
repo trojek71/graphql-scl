@@ -11,5 +11,9 @@
   "license": "ISC",
   "devDependencies": {
     "prisma": "^2.23.0"
+  },
+  "dependencies": {
+    "graphql-yoga": "^1.18.3",
+    "uuidv4": "^6.2.8"
   }
 }
