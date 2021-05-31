@@ -13,6 +13,7 @@ generator client {
 model User {
   id        String     @id @default(uuid())
   email     String
+  password  String
   active    Boolean
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
