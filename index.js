@@ -55,6 +55,7 @@ const typeDefs = `
 
     type Query {
         users:[User!]
+        user(id: String!):User
     }
 
   `
@@ -67,6 +68,14 @@ const resolvers = {
                     include:{
                         itsystems: true,
                         profile: true
+                    }
+                })
+            },
+            user: async (parent, args, context, info)=>{
+                const { id } = args
+                return context.prisma.user.findUnique({
+                    where: {
+                        id: id
                     }
                 })
             }
