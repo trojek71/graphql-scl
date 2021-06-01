@@ -11,7 +11,7 @@ generator client {
 }
 
 model User {
-  id        String     @id @default(uuid())
+  id        String     @id @default(cuid())
   email     String
   password  String
   active    Boolean
@@ -20,35 +20,35 @@ model User {
   role      Role
   profile   Profile?
   itsystems Itsystem[]
+
 }
 
 model Profile {
-  id        String @id @default(uuid())
+  id        String @id @default(cuid())
   firstName String
   lastName  String
   phone     String
   room      Int
   bio       String
-  userId    String  @unique
-  user      User    @relation(fields: [userId], references: [id])
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
 }
 
 model Itsystem {
-  id              String   @id @default(uuid())
-  itSystemUsers   User[]   @relation(fields: [itSystemUserId], references: [id])
-  itSystemUserId  String
-  sysInfo         SysInfo?
-  userPermission  String
+  id            String   @id @default(cuid())
+  itSystemUsers User[]
+  sysInfo       SysInfo?
+  permission    String
 
 
 }
 
 model SysInfo {
-  id           String   @id @default(uuid())
+  id           String   @id @default(cuid())
   name         String
   active       Boolean
   description  String
-  bissnesOwner String
+  bisnessOwner String
   adminstrator String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
