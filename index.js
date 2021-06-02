@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client")
 const { GraphQLServer } = require("graphql-yoga")
 const  { GraphQLDateTime } = require("graphql-iso-date")
+const { transformDocument } = require("@prisma/client/runtime")
 
 const typeDefs = `
   scalar DateTime
@@ -22,7 +23,7 @@ const typeDefs = `
     firstName: String
     lastName:  String
     phone:     String
-    room:      Int
+    room:      String
     bio:       String
     userId:    String
     user:      User!   
@@ -44,7 +45,7 @@ const typeDefs = `
     adminstrator: String
     createdAt:    DateTime 
     updatedAt:    DateTime 
-    itsystem:     Itsystem 
+    itsystem:     Itsystem!
     itSystemId:   String   
     }
 
@@ -55,7 +56,11 @@ const typeDefs = `
 
     type Query {
         users:[User!]
-        user(id: String!):User
+        user(id: String!): User
+        itsystem(id: String!): Itsystem
+        itsystems:[Itsystem!]
+        sysinfos:[SysInfo!]
+        sysinfo(id: String!): SysInfo
     }
 
   `
@@ -66,8 +71,15 @@ const resolvers = {
             users: async (parent, args, context, info)=>{
                 return context.prisma.user.findMany({
                     include:{
-                        itsystems: true,
-                        profile: true
+                        itsystems: {
+                            include:{
+                              sysInfo:true
+                        },
+                        profile: true 
+                        }
+
+
+                        
                     }
                 })
             },
@@ -76,9 +88,45 @@ const resolvers = {
                 return context.prisma.user.findUnique({
                     where: {
                         id: id
+                    },
+                    include:{
+                      itsystems: true
                     }
-                })
+                    
+            })
+          },
+            itsystem: async (parent, args, context, info)=> {
+              const { id } = args
+              return context.prisma.itsystem.findUnique({
+                where :{
+                  id: id
+                },
+                include : {
+                  sysInfo: true
+                }
+              })
+            },
+            itsystems: async (parent, args, context, info)=> {      
+              return context.prisma.itsystem.findMany({
+                include : {
+                  sysInfo: true
+                }
+              })
+            },
+            sysinfos: async( parent, args, context, info)=>{
+              return context.prisma.sysInfo.findMany({})
+            },
+            sysinfo: async (parent, args, context, info)=> {
+              const{ id} = args
+              return context.prisma.sysInfo.findUnique({
+                where :{
+                  id: id
+                }
+              })
             }
+
+
+
         }
 
 }

@@ -28,7 +28,7 @@ model Profile {
   firstName String
   lastName  String
   phone     String
-  room      Int
+  room      String
   bio       String
   userId    String @unique
   user      User   @relation(fields: [userId], references: [id])
@@ -52,8 +52,9 @@ model SysInfo {
   adminstrator String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  itsystem     Itsystem @relation(fields: [itSystemId], references: [id])
   itSystemId   String   @unique
+  itsystem     Itsystem @relation(fields: [itSystemId], references: [id])
+
 }
 
 enum Role {
