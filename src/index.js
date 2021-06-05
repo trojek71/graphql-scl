@@ -74,12 +74,10 @@ const resolvers = {
                         itsystems: {
                             include:{
                               sysInfo:true
-                        },
-                        profile: true 
-                        }
-
-
+                        }, 
                         
+                        },
+                        profile:true
                     }
                 })
             },
